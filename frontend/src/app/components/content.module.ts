@@ -3,15 +3,17 @@ import { CommonModule } from '@angular/common';
 import { ContentComponent } from './content.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TableModule } from './table/table.module';
+import { StatesModule } from './states/states.module';
 
 
 @NgModule({
   declarations: [
-    ContentComponent,
+    ContentComponent
   ],
   imports: [
     CommonModule,
     TableModule,
+    StatesModule,
     MatGridListModule
   ],
   exports: [ContentComponent]
