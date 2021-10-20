@@ -4,11 +4,15 @@ import Prelude hiding (apply)
 import Effect (Effect)
 import Effect.Console (log)
 import Main.Requests (sendGlobalData)
-import Node.Express.App (App, listenHttp, get)
+import Node.Express.App (App, get, listenHttp, useExternal)
+import Node.Express.Types (Middleware)
 import Node.HTTP (Server)
+
+foreign import cors :: Middleware
 
 app :: App
 app = do
+  useExternal cors
   get "/global" sendGlobalData
 
 main :: Effect Server

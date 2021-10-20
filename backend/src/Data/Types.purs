@@ -1,30 +1,22 @@
 module Main.Data.Types where
 
 import Data.Nullable (Nullable)
+import Foreign (Foreign)
 
 type TableColumns
   = Array String
 
-type TableColumnsSub
-  = Array TableColumns
+type TableColumnsSecondary
+  = Array (Array String)
 
 type ColumnSizes
   = Array Int
 
-type Data
-  = { total :: String
-    , negative :: String
-    , positive :: String
-    , hospitalizedCurrently :: String
-    , recovered :: String
-    , death :: String
-    }
-
 type GlobalData
   = { columns :: TableColumns
-    , secondaryColumns :: TableColumns
+    , secondaryColumns :: TableColumnsSecondary
     , columnSizes :: ColumnSizes
-    , data :: Data
+    , data :: Foreign
     }
 
 type GlobalDataFromApi
