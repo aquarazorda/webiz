@@ -25,7 +25,7 @@ type TableData
 type StateData
   = { date :: String
     , name :: String
-    , 
+    , abbreviation :: StateAbbreviation
     , description :: String
     , twitter :: String
     , primarySite :: String
@@ -34,8 +34,7 @@ type StateData
     }
 
 type StateDataFromApi
-  = { state :: String
-    , abbreviation :: StateAbbreviation
+  = { state :: StateAbbreviation
     , notes :: String
     , name :: String
     , twitter :: String

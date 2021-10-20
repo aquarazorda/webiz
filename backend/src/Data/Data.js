@@ -10,27 +10,33 @@ secondaryColumns =
     ]
 
 exports.prepareTable = (data) => ({
-    columns: columns,
-    secondaryColumns: secondaryColumns.flat(),
-    columnSizes: columns.map((_, index) => secondaryColumns[index].length),
-    content: {
-        "Total": data.total,
-        "Negative": data.negative,
-        "Positive": data.positive,
-        "Pending": data.pending,
-        "Currently": data.hospitalizedCurrently,
-        "Recovered": data.recovered,
-        "Deaths": data.death,
-        "Positive + Negative": data.positive + data.negative
+    table: {
+        columns: columns,
+        secondaryColumns: secondaryColumns.flat(),
+        columnSizes: columns.map((_, index) => secondaryColumns[index].length),
+        content: {
+            "Total": data.total,
+            "Negative": data.negative,
+            "Positive": data.positive,
+            "Pending": data.pending,
+            "Currently": data.hospitalizedCurrently,
+            "Recovered": data.recovered,
+            "Deaths": data.death,
+            "Positive + Negative": data.positive + data.negative
+        }
     }
 });
 
-exports.prepareState = (state) => (data) => ({
-    name: state.name,
-    abbreviation: state.state.toLower(),
-    description: state.notes,
-    twitter: state.twitter,
-    primarySite: state.covid19Site,
-    secondarySite: state.covid19SiteSecondary,
-    table: this.prepareTable(data)
-});
+// Spread operator sadly doesn't work here...
+exports.prepareState = (state) => (data) =>
+    Object.assign(
+        {
+            name: state.name,
+            abbreviation: state.state.toLowerCase(),
+            description: state.notes,
+            twitter: state.twitter,
+            primarySite: state.covid19Site,
+            secondarySite: state.covid19SiteSecondary
+        },
+        this.prepareTable(data)
+    )
