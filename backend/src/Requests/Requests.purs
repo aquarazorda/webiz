@@ -4,12 +4,12 @@ import Prelude
 import Affjax as AX
 import Affjax.ResponseFormat as ResponseFormat
 import Data.Argonaut.Core (Json)
-import Data.Array.NonEmpty (NonEmptyArray, head)
+import Data.Array.NonEmpty (NonEmptyArray)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Effect.Aff (Aff)
 import Effect.Aff.Class (liftAff)
-import Main.Data (generateStateData, getCurrentState, prepareTable)
+import Main.Data (generateStateData, generateStatesData, getCurrentState)
 import Main.Types (TableDataFromApi)
 import Node.Express.Handler (HandlerM)
 import Node.Express.Request (getRouteParam)
@@ -24,22 +24,36 @@ getJson url = do
     Left _ -> pure Nothing
     Right response -> pure $ Just $ jsonToAnyType response.body
 
+getStates :: forall a b. Aff { info :: Maybe a, stateData :: Maybe b }
+getStates = do
+  info' <- getJson "https://covidtracking.com/api/states/info"
+  stateData' <- getJson "https://covidtracking.com/api/states"
+  pure
+    { info: info'
+    , stateData: stateData'
+    }
+
+finalize :: forall a. Maybe a -> HandlerM Unit
+finalize sd = case sd of
+  Just d -> send d
+  Nothing -> send "Error fetching data!"
+
 sendState :: HandlerM Unit
 sendState = do
   stateName <- getRouteParam "state"
-  states' <- liftAff $ getJson "https://covidtracking.com/api/states/info"
-  data' <- liftAff $ getJson "https://covidtracking.com/api/states"
+  d <- liftAff getStates
   let
-    stateInfo = getCurrentState stateName states'
+    stateInfo = getCurrentState stateName d.info
 
-    stateData = getCurrentState stateName data'
-  case generateStateData stateInfo stateData of
-    Just d -> send d
-    Nothing -> send "Error fetching data!"
+    stateData = getCurrentState stateName d.stateData
+  finalize $ generateStateData stateInfo stateData
+
+sendStates :: HandlerM Unit
+sendStates = do
+  d <- liftAff getStates
+  finalize $ generateStatesData d.info d.stateData
 
 sendUs :: HandlerM Unit
 sendUs = do
   data' <- liftAff $ getJson "http://covidtracking.com/api/us" :: HandlerM (Maybe (NonEmptyArray TableDataFromApi))
-  case data' of
-    Just d -> send { table: prepareTable $ head d }
-    Nothing -> send "Error fetching data!"
+  finalize data'

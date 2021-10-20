@@ -1,9 +1,11 @@
 module Main.Data where
 
 import Prelude
-import Data.Array (find)
-import Data.Maybe (Maybe)
+import Data.Array (find, zip)
+import Data.Maybe (Maybe(..))
 import Data.String (toLower)
+import Data.Traversable (sequence)
+import Data.Tuple (fst, snd)
 import Main.Types (StateAbbreviation, StateData, StateDataFromApi, TableDataFromApi, TableData)
 
 foreign import prepareTable :: TableDataFromApi -> TableData
@@ -33,3 +35,9 @@ generateStateData s d = do
   state <- s
   data' <- d
   pure $ prepareState state data'
+
+generateStatesData :: Maybe (Array StateDataFromApi) -> Maybe (Array TableDataFromApi) -> Maybe (Array StateData)
+generateStatesData s d = do
+  states <- s
+  data' <- d
+  sequence (map (\t -> generateStateData (Just (fst t)) (Just (snd t))) (zip states data'))
