@@ -1,1 +1,17 @@
-<p>states works!</p>
+<ng-container *ngFor="let state of data">
+    <mat-card class="card" id="{{ state.abbreviation }}">
+        <mat-card-header>
+            <mat-card-title>{{ state.name }}</mat-card-title>
+            <mat-card-subtitle>{{ state.abbreviation }}</mat-card-subtitle>
+        </mat-card-header>
+        <app-table [inputData]="state"></app-table>
+        <mat-card-content>
+            <p>
+                {{ state.description }}
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button (click)="scrollTop()">Scroll to top</button>
+        </mat-card-actions>
+    </mat-card>
+</ng-container>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CombinedData, EitherData } from 'src/app/types/global-data.type';
 import * as E from 'fp-ts/lib/Either';
 import * as T from 'fp-ts/lib/Task';
@@ -8,7 +8,7 @@ import { HttpService } from 'src/app/services/http.service';
     selector: 'app-base',
     template: ''
 })
-export class BaseComponent implements AfterViewInit {
+export class BaseComponent implements OnInit {
 
     @Input() dataUrl: string = "";
     @Input() inputData?: CombinedData;
@@ -18,12 +18,12 @@ export class BaseComponent implements AfterViewInit {
 
     constructor(protected http: HttpService) { }
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this.loadData();
     }
 
     loadData = () => this.inputData
-        ? this.data = this.inputData : this.http.get(this.dataUrl).then(this.onData);
+        ? this.setData(this.inputData) : this.http.get(this.dataUrl).then(this.onData);
 
     setReqData = (data: EitherData<CombinedData>) => this.reqData = data;
 

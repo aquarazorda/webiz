@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentComponent } from './content.component';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { TableModule } from './table/table.module';
 import { StatesModule } from './states/states.module';
+import { MenuModule } from './menu/menu.module';
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import { StatesModule } from './states/states.module';
     CommonModule,
     TableModule,
     StatesModule,
-    MatGridListModule
+    MenuModule
   ],
   exports: [ContentComponent]
 })
