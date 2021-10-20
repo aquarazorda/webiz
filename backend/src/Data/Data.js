@@ -12,9 +12,10 @@ secondaryColumns =
 exports.prepareTable = (data) => ({
     table: {
         columns: columns,
-        secondaryColumns: secondaryColumns.flat(),
+        secondaryColumns: secondaryColumns,
+        displayedColumns: secondaryColumns.flat(),
         columnSizes: columns.map((_, index) => secondaryColumns[index].length),
-        content: {
+        content: [{
             "Total": data.total,
             "Negative": data.negative,
             "Positive": data.positive,
@@ -23,7 +24,7 @@ exports.prepareTable = (data) => ({
             "Recovered": data.recovered,
             "Deaths": data.death,
             "Positive + Negative": data.positive + data.negative
-        }
+        }]
     }
 });
 

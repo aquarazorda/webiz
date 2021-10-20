@@ -18,8 +18,9 @@ type ColumnSizes
 type TableData
   = { columns :: TableColumns
     , secondaryColumns :: TableColumnsSecondary
+    , displayedColumns :: TableColumns
     , columnSizes :: ColumnSizes
-    , content :: Foreign
+    , content :: Array Foreign
     }
 
 type StateData
