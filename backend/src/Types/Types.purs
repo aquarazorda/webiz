@@ -3,9 +3,6 @@ module Main.Types where
 import Data.Nullable (Nullable)
 import Foreign (Foreign)
 
-type IsState
-  = Boolean
-
 type StateAbbreviation
   = String
 
@@ -22,11 +19,14 @@ type TableData
   = { columns :: TableColumns
     , secondaryColumns :: TableColumnsSecondary
     , columnSizes :: ColumnSizes
-    , data :: Foreign
+    , content :: Foreign
     }
 
 type StateData
   = { date :: String
+    , name :: String
+    , 
+    , description :: String
     , twitter :: String
     , primarySite :: String
     , secondarySite :: String
@@ -35,6 +35,7 @@ type StateData
 
 type StateDataFromApi
   = { state :: String
+    , abbreviation :: StateAbbreviation
     , notes :: String
     , name :: String
     , twitter :: String

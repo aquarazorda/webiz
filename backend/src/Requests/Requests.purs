@@ -4,13 +4,13 @@ import Prelude
 import Affjax as AX
 import Affjax.ResponseFormat as ResponseFormat
 import Data.Argonaut.Core (Json)
-import Data.Array.NonEmpty (NonEmptyArray)
+import Data.Array.NonEmpty (NonEmptyArray, head)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Effect.Aff (Aff)
 import Effect.Aff.Class (liftAff)
-import Main.Data (generateStateData, generateStatesData, getCurrentState)
-import Main.Types (TableDataFromApi)
+import Main.Data (generateStateData, generateStatesData, getCurrentState, prepareTable)
+import Main.Types (TableDataFromApi, TableData)
 import Node.Express.Handler (HandlerM)
 import Node.Express.Request (getRouteParam)
 import Node.Express.Response (send)
@@ -55,5 +55,8 @@ sendStates = do
 
 sendUs :: HandlerM Unit
 sendUs = do
-  data' <- liftAff $ getJson "http://covidtracking.com/api/us" :: HandlerM (Maybe (NonEmptyArray TableDataFromApi))
-  finalize data'
+  data' <- liftAff $ getJson "http://covidtracking.com/api/us"
+  finalize $ prepared data'
+  where
+  prepared :: Maybe (NonEmptyArray TableDataFromApi) -> Maybe TableData
+  prepared = liftA1 $ head >>> prepareTable

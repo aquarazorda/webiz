@@ -12,18 +12,6 @@ foreign import prepareTable :: TableDataFromApi -> TableData
 
 foreign import prepareState :: StateDataFromApi -> TableDataFromApi -> StateData
 
-columns :: Array String
-columns = [ "Cases", "Tests", "Hospitalized", "Outcomes", "Total Test Results" ]
-
-secondaryColumns :: Array (Array String)
-secondaryColumns =
-  [ [ "Total" ]
-  , [ "Negative", "Pending" ]
-  , [ "Currently" ]
-  , [ "Recovered", "Deaths" ]
-  , [ "Positive + Negative" ]
-  ]
-
 getCurrentState :: forall a. Maybe StateAbbreviation -> Maybe (Array { state :: String | a }) -> Maybe { state :: String | a }
 getCurrentState s ss = do
   stateName <- s
