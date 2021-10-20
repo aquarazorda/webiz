@@ -26,6 +26,7 @@ to generate this file without the comments in this block.
   , "nullable"
   , "prelude"
   , "psci-support"
+  , "strings"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

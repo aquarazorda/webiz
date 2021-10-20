@@ -3,7 +3,7 @@ module Main where
 import Prelude hiding (apply)
 import Effect (Effect)
 import Effect.Console (log)
-import Main.Requests (sendGlobalData)
+import Main.Requests (sendState, sendUs)
 import Node.Express.App (App, get, listenHttp, useExternal)
 import Node.Express.Types (Middleware)
 import Node.HTTP (Server)
@@ -13,7 +13,8 @@ foreign import cors :: Middleware
 app :: App
 app = do
   useExternal cors
-  get "/global" sendGlobalData
+  get "/us" sendUs
+  get "/state/:state" sendState
 
 main :: Effect Server
 main = do

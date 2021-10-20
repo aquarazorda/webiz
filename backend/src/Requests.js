@@ -1,1 +1,0 @@
-exports.jsonToAnyType = (json) => json[0];
