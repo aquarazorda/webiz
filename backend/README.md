@@ -2,7 +2,7 @@
 # Usage
  Install the PureScript Compiler
  ```
-npm install -g purescript
+npm install -g purescript@0.14.1
 ```
 Install npm packages
 ```
